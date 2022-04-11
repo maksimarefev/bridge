@@ -7,14 +7,17 @@ import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 contract ERC20Bridge {
 
     address public signer;
+    address public tokenAddress;
+
     StepanToken private token;
-    mapping(bytes32 => bool) private handledHashes; //todo arefev: why use nonce?
+    mapping(bytes32 => bool) private handledHashes;
 
     event Swap(address indexed from, address indexed to, uint256 amount);
 
-    constructor(address _signer, address tokenAddress) {
+    constructor(address _signer, address _tokenAddress) {
         signer = _signer;
-        token = StepanToken(tokenAddress);
+        tokenAddress = _tokenAddress;
+        token = StepanToken(_tokenAddress);
     }
 
     function swap(address to, uint256 amount) public {
@@ -29,24 +32,18 @@ contract ERC20Bridge {
     function redeem(address from, uint256 amount, uint256 nonce, bytes memory signature) public {
         address to = msg.sender;
 
-        ECDSA.recover(_hash(from, to, amount, nonce), v, r, s);
+        bytes32 hash = _hash(from, to, amount, nonce);
+        require(!handledHashes[hash], "Transaction already handled");
 
         address recoveredAddress = ECDSA.recover(_hash(from, to, amount, nonce), signature);
         require(recoveredAddress == signer, "Failed signature verification");
 
+        handledHashes[hash] = true;
         token.mint(to, amount);
     }
 
-    /*todo arefev: When a message is signed in Ethereum (e.g. using eth_signMessage ), it is first prefixed with the header
-         \x19Ethereum Signed Message:\n followed by the length of the message and then finally the message itself.
-    */
-    function _hash(address from, address to, uint256 amount, uint256 nonce) internal returns (bytes32 memory) {
-        bytes memory prefix = "\x19Ethereum Signed Message:\n32"; //todo arefev: what is the length actually?
-        return keccak256(
-            abi.encodePacked(
-                prefix,
-                keccak256(abi.encodePacked(from, to, amount))
-            )
-        );
+    function _hash(address from, address to, uint256 amount, uint256 nonce) internal returns (bytes32) {
+        bytes memory prefix = "\x19Ethereum Signed Message:\n32";
+        return keccak256(abi.encodePacked(prefix, keccak256(abi.encodePacked(from, to, amount, nonce))));
     }
 }

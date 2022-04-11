@@ -3,6 +3,7 @@ import { ethers, Wallet, EventFilter } from "ethers";
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 
+//todo arefev: do not forget the nonce
 async function main() {
     const signer: Wallet = new ethers.Wallet(PRIVATE_KEY);
 
@@ -27,19 +28,11 @@ async function main() {
         const message: Uint8Array = ethers.utils.arrayify(
             ethers.utils.solidityKeccak256([ 'address', 'address', 'uint256' ], [ from, to, value ])
         );
-        //const signature: string = await signer.signMessage(message);
+        console.log("Message length:", message.length);
         const signature: string = await signer.signMessage(message);
         const recoverAddress: string = ethers.utils.verifyMessage(message, signature);
         console.log("Signature: ", signature, "|","Recovered address: ", recoverAddress);
     });
-
-    /* provider.on(filter, (log) => {
-        console.log("Event arrived:", log); //todo arefev: append nonce as well
-        //console.log("Parsed amount:", parseInt(log.topics[2], 16));
-        console.log(iface.parseLog(log));
-        //const signedMessage: any = await wallet.signMessage(message);
-        //console.log("Signed message:", signedMessage);
-    }) */
 }
 
 main()

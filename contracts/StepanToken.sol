@@ -11,15 +11,16 @@ interface Burnable {
     function burnFrom(address account, uint256 amount) external;
 }
 
+//todo arefev: rename
 contract StepanToken is ERC20, Mintable, Burnable, Ownable {
 
     constructor() public ERC20("StepanToken", "ST") {}
 
-    function mint(address account, uint256 amount) public onlyOwner {
+    function mint(address account, uint256 amount) public override onlyOwner {
         _mint(account, amount);
     }
 
-    function burnFrom(address account, uint256 amount) public onlyOwner {
+    function burnFrom(address account, uint256 amount) public override onlyOwner {
         _spendAllowance(account, _msgSender(), amount);
         _burn(account, amount);
     }
