@@ -25,7 +25,7 @@ function verify(contractAddress: string, network: string, ...constructorParamete
 async function main() {
 
     const networkId: number = (await ethers.provider.getNetwork()).chainId;
-    const networkName: string = () => {
+    const networkName: string = (() => {
         if (networkId === 97) {
             return "bsc";
         } else if (networkId === 4) {
@@ -33,7 +33,7 @@ async function main() {
         } else {
             throw new Error("Invalid network chosen");
         }
-    }();
+    })();
     const accounts: SignerWithAddress[] = await ethers.getSigners();
 
     if (accounts.length == 0) {

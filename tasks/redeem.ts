@@ -13,11 +13,9 @@ task("redeem", "Verifies the signature and mints the `amount` of tokens to the `
     .setAction(async function (taskArgs, hre) {
         const ERC20Bridge: ContractFactory = await hre.ethers.getContractFactory("ERC20Bridge");
         const bridge: Contract = await ERC20Bridge.attach(taskArgs.contractAddress);
-
         const accounts: SignerWithAddress[] = await hre.ethers.getSigners();
 
-        const redeemTx: any =
-            await bridge.redeem(taskArgs.from, taskArgs.amount, taskArgs.nonce, taskArgs.signature);
+        const redeemTx: any = await bridge.redeem(taskArgs.from, taskArgs.amount, taskArgs.nonce, taskArgs.signature);
         const redeemTxReceipt: any = await redeemTx.wait();
 
         console.log("Successfully redeemed %d tokens to %s", taskArgs.amount, await accounts[0].getAddress());

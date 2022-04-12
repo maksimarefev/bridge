@@ -14,9 +14,13 @@ function getContractAddresses(): [string, string] {
     return [process.argv[2], process.argv[3]];
 }
 
-function subscribe(contractAddress: string, provider: Provider) {
+function subscribe(contractAddress: string, provider: Provider, signer: Wallet) {
+    let nonce: number = 0;
+
     const contract: any = new ethers.Contract(
-        contractAddress, [ "event SwapInitialized(address indexed from, address indexed to, uint256 amount)" ], provider
+        contractAddress,
+        [ "event SwapInitialized(address indexed from, address indexed to, uint256 amount, uint256 networkId)" ],
+        provider
     )
 
     //solidityKeccak256 will encodePacked and get a keccak256 of the result
@@ -34,15 +38,13 @@ function subscribe(contractAddress: string, provider: Provider) {
             from, to, amount, targetNetworkId, nonce, signature
         );
     });
+
+    console.log("Subscribed to %s", contractAddress);
 }
 
-//todo arefev: bsc can be accessed via Moralis
 async function main() {
-    let nonce: number = 0;
-
     const bscProvider: Provider = new ethers.providers.JsonRpcProvider('https://data-seed-prebsc-1-s1.binance.org:8545');
     const rinkebyProvider: Provider = new ethers.providers.AlchemyProvider("rinkeby");
-    const rinkebyContractAddress: string = getRinkebyContractAddress();
     const [rinkebyContractAddress, bscContractAddress] = getContractAddresses();
     const privateKey: string = process.env.SIGNER_KEY;
 
@@ -54,8 +56,8 @@ async function main() {
 
     console.log("Signer address:", signer.address);
 
-    subscribe(rinkebyContractAddress, rinkebyProvider);
-    subscribe(bscContractAddress, bscProvider);
+    subscribe(rinkebyContractAddress, rinkebyProvider, signer);
+    subscribe(bscContractAddress, bscProvider, signer);
 }
 
 const oneHour: number = 1000 * 60 * 60;

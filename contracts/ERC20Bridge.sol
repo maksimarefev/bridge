@@ -51,12 +51,10 @@ contract ERC20Bridge {
     /**
      * @notice Verifies the signature and mints the `amount` of tokens to the `msg.sender` address
      */
-    function redeem(address from, uint256 amount, uint256 nonce, uint256 targetNetworkId, bytes memory signature) public {
-        require(networkId == targetNetworkId, "Invalid target network id");
-
+    function redeem(address from, uint256 amount, uint256 nonce, bytes memory signature) public {
         address to = msg.sender;
 
-        bytes32 hash = _hash(from, to, amount, targetNetworkId, nonce);
+        bytes32 hash = _hash(from, to, amount, nonce);
         require(!handledHashes[hash], "Transaction already handled");
 
         address recoveredAddress = ECDSA.recover(hash, signature);
@@ -66,8 +64,8 @@ contract ERC20Bridge {
         token.mint(to, amount);
     }
 
-    function _hash(address from, address to, uint256 amount, uint256 targetNetworkId, uint256 nonce) internal returns (bytes32) {
+    function _hash(address from, address to, uint256 amount, uint256 nonce) internal returns (bytes32) {
         bytes memory prefix = "\x19Ethereum Signed Message:\n32";
-        return keccak256(abi.encodePacked(prefix, keccak256(abi.encodePacked(from, to, amount, targetNetworkId, nonce))));
+        return keccak256(abi.encodePacked(prefix, keccak256(abi.encodePacked(from, to, amount, networkId, nonce))));
     }
 }

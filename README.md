@@ -22,7 +22,7 @@ In the root folder create *.env* file and fill it the following properties:<br/>
 2. Look at the output in order to get parameters with corresponding signatures
 
 ## How to run a task
-From the root folder run<br/>``` npx hardhat [task name] --network rinkeby --contract-address [contract address] --argument [argument value] ```<br/>Example:<br/>``` npx hardhat createItem --network rinkeby --contract-address 0xa9F8A1d1235De819CA9F0419AB257071e467fBb9 --token-identifier QmVW8oSySifTBDBvkTGC7J5r9UDCJ4Ndiig6B3EHvURt5S --token-owner 0x12D8F31923Aa0ACC543b96733Bc0ed348Ef44970 ```
+From the root folder run<br/>``` npx hardhat [task name] --network rinkeby --contract-address [contract address] --argument [argument value] ```<br/>Example:<br/>``` npx hardhat swap --network rinkeby --contract-address 0x36913BEc58a87BfB5eC1Fbb2fdEc6dd78a00B6eC --to 0x12D8F31923Aa0ACC543b96733Bc0ed348Ef44970 --amount 100 --network-id 97 ```
 
 ## The list of available tasks
 | Task name | Description                                                                          | Options                                                                                                                                                                                                                                                                                                  |
@@ -37,17 +37,16 @@ From the root folder run ``` npx hardhat coverage ```
 ERC20Bridge
     swap
       √ Should not allow to swap on insufficient balance (69ms)
-      √ Should not allow to swap on insufficient allowance (46ms)
+      √ Should not allow to swap on insufficient allowance (53ms)
       √ Should not allow to swap to the same network
-      √ Should emit Swap event (68ms)
-      √ Should burn tokens (61ms)
+      √ Should emit Swap event (48ms)
+      √ Should burn tokens
     redeem
-      √ Should not allow to redeem twice (92ms)
-      √ Should not allow to redeem on non-target network (43ms)
-      √ Should not allow to redeem on wrong signer address (49ms)
-      √ Should mint tokens (61ms)
+      √ Should not allow to redeem twice (77ms)
+      √ Should not allow to redeem on wrong signer address (43ms)
+      √ Should mint tokens (47ms)
 
-  9 passing (2s)
+  8 passing (1s)
 ```
 | File               | % Stmts    | % Branch   | % Funcs    | % Lines    | Uncovered Lines  |
 |--------------------|------------|------------|------------|------------|------------------|

@@ -114,26 +114,13 @@ describe("ERC20Bridge", function () {
             const amount: number = 1;
             const nonce: number = 1;
             const networkId: number = (await erc20Bridge.networkId()).toNumber();
-            const signature: string = await sign(aliceAddress, aliceAddress, amount, networkId,nonce, alice);
+            const signature: string = await sign(aliceAddress, aliceAddress, amount, networkId, nonce, alice);
             await erc20Mock.mint.whenCalledWith(aliceAddress, amount).returns();
 
-            await erc20Bridge.redeem(aliceAddress, amount, nonce, networkId, signature);
-            const redeemTxPromise: Promise<any> = erc20Bridge.redeem(aliceAddress, amount, nonce, networkId, signature);
+            await erc20Bridge.redeem(aliceAddress, amount, nonce, signature);
+            const redeemTxPromise: Promise<any> = erc20Bridge.redeem(aliceAddress, amount, nonce, signature);
 
             await expect(redeemTxPromise).to.be.revertedWith("Transaction already handled");
-        });
-
-        it("Should not allow to redeem on non-target network", async function() {
-            const aliceAddress: string = await alice.getAddress();
-            const amount: number = 1;
-            const nonce: number = 1;
-            const networkId: number = (await erc20Bridge.networkId()).toNumber() + 1;
-            const signature: string = await sign(aliceAddress, aliceAddress, amount, networkId,nonce, alice);
-            await erc20Mock.mint.whenCalledWith(aliceAddress, amount).returns();
-
-            const redeemTxPromise: Promise<any> = erc20Bridge.redeem(aliceAddress, amount, nonce, networkId, signature);
-
-            await expect(redeemTxPromise).to.be.revertedWith("Invalid target network id");
         });
 
         it("Should not allow to redeem on wrong signer address", async function() {
@@ -144,7 +131,7 @@ describe("ERC20Bridge", function () {
             const signature: string = await sign(aliceAddress, aliceAddress, amount, networkId, nonce, bob);
             await erc20Mock.mint.whenCalledWith(aliceAddress, amount).returns();
 
-            const redeemTxPromise: Promise<any> = erc20Bridge.redeem(aliceAddress, amount, nonce, networkId, signature);
+            const redeemTxPromise: Promise<any> = erc20Bridge.redeem(aliceAddress, amount, nonce, signature);
 
             await expect(redeemTxPromise).to.be.revertedWith("Failed signature verification");
         });
@@ -157,7 +144,7 @@ describe("ERC20Bridge", function () {
             const signature: string = await sign(aliceAddress, aliceAddress, amount, networkId, nonce, alice);
             await erc20Mock.mint.whenCalledWith(aliceAddress, amount).returns();
 
-            await erc20Bridge.redeem(aliceAddress, amount, nonce, networkId, signature);
+            await erc20Bridge.redeem(aliceAddress, amount, nonce, signature);
 
             expect(erc20Mock.mint).to.be.calledOnceWith(aliceAddress, amount);
         });

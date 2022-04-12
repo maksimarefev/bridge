@@ -7,13 +7,14 @@ task("swap", "Burns the `amount` of tokens and emits SwapInitialized event")
     .addParam("contractAddress", "The address of the bridge contract")
     .addParam("to", "The recepient address")
     .addParam("amount", "The amount of tokens to be swapped")
+    .addParam("networkId", "The target networkId")
     .setAction(async function (taskArgs, hre) {
         const ERC20Bridge: ContractFactory = await hre.ethers.getContractFactory("ERC20Bridge");
         const bridge: Contract = await ERC20Bridge.attach(taskArgs.contractAddress);
 
-        const swapTx: any = await bridge.swap(taskArgs.to, taskArgs.amount);
+        const swapTx: any = await bridge.swap(taskArgs.to, taskArgs.amount, taskArgs.networkId);
         const swapTxReceipt: any = await swapTx.wait();
-        const swapInitializedEvent: Event = swapTxReceipt.events[0];
+        const swapInitializedEvent: Event = swapTxReceipt.events[2];
 
         console.log(
             "Successfully triggered the swap operation for transferring %d tokens from %s to %s",
