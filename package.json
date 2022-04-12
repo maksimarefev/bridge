@@ -32,6 +32,7 @@
   },
   "scripts": {
     "deployRinkeby": "npx hardhat run --network rinkeby scripts/deploy.ts",
-    "deployBSC": "npx hardhat run --network bsc scripts/deploy.ts"
+    "deployBSC": "npx hardhat run --network bsc scripts/deploy.ts",
+    "startBackendService": "npx ts-node scripts/signer.ts"
   }
 }
