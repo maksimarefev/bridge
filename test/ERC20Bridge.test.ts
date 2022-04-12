@@ -58,7 +58,7 @@ describe("ERC20Bridge", function () {
 
             const swapTxPromise: Promise<any> = erc20Bridge.swap(aliceAddress, amount);
 
-            await expect(swapTxPromise).to.be.revertedWith("Bridge is not allowed to burn that amount of tokens");
+            await expect(swapTxPromise).to.be.revertedWith("Bridge has not enough allowance");
         });
 
         it("Should emit Swap event event", async function() {
@@ -71,7 +71,7 @@ describe("ERC20Bridge", function () {
 
             const swapTxPromise: Promise<any> = erc20Bridge.swap(aliceAddress, amount);
 
-            await expect(swapTxPromise).to.emit(erc20Bridge, "Swap").withArgs(aliceAddress, aliceAddress, amount);
+            await expect(swapTxPromise).to.emit(erc20Bridge, "SwapInitialized").withArgs(aliceAddress, aliceAddress, amount);
         });
 
         it("Should burn tokens", async function() {

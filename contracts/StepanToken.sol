@@ -11,10 +11,11 @@ interface Burnable {
     function burnFrom(address account, uint256 amount) external;
 }
 
-//todo arefev: rename
 contract StepanToken is ERC20, Mintable, Burnable, Ownable {
 
+    /* solhint-disable no-empty-blocks */
     constructor() public ERC20("StepanToken", "ST") {}
+    /* solhint-disable no-empty-blocks */
 
     function mint(address account, uint256 amount) public override onlyOwner {
         _mint(account, amount);

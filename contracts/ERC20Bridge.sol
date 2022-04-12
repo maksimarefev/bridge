@@ -3,32 +3,47 @@ pragma solidity ^0.8.0;
 import "./StepanToken.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
-//todo arefev: add documentation
 contract ERC20Bridge {
 
+    /**
+     * @dev The address of the account which is responsible for signing messages
+     */
     address public signer;
+
+    /**
+     * @dev The ERC20 token address
+     */
     address public tokenAddress;
 
     StepanToken private token;
     mapping(bytes32 => bool) private handledHashes;
 
-    event Swap(address indexed from, address indexed to, uint256 amount);
+    /**
+     * @dev Emitted when the swap operation was triggered
+     */
+    event SwapInitialized(address indexed from, address indexed to, uint256 amount);
 
-    constructor(address _signer, address _tokenAddress) {
+    constructor(address _signer, address _tokenAddress) public {
         signer = _signer;
         tokenAddress = _tokenAddress;
         token = StepanToken(_tokenAddress);
     }
 
+    /**
+     * @notice Burns the `amount` of tokens and emits SwapInitialized event
+     */
     function swap(address to, uint256 amount) public {
         require(token.balanceOf(msg.sender) >= amount, "Sender has not enough balance");
-        require(token.allowance(msg.sender, address(this)) >= amount, "Bridge is not allowed to burn that amount of tokens");
+        require(token.allowance(msg.sender, address(this)) >= amount, "Bridge has not enough allowance");
 
         token.burnFrom(to, amount);
 
-        emit Swap(msg.sender, to, amount);
+        emit SwapInitialized(msg.sender, to, amount);
     }
 
+    /**
+     * @notice Verifies the signature and mints the `amount` of tokens to the `msg.sender` address
+     */
     function redeem(address from, uint256 amount, uint256 nonce, bytes memory signature) public {
         address to = msg.sender;
 

@@ -1,5 +1,3 @@
-//todo arefev: try import "hardhat-gas-reporter";
-
 import "dotenv/config";
 import "solidity-coverage";
 import "@typechain/hardhat";
@@ -20,6 +18,10 @@ const config: HardhatUserConfig = {
         rinkeby: {
           url: "https://eth-rinkeby.alchemyapi.io/v2/" + ALCHEMY_API_KEY,
           accounts: [`0x${PRIVATE_KEY}`]
+        },
+        bsc: {
+            url: "https://data-seed-prebsc-1-s1.binance.org:8545",
+            accounts: [`0x${PRIVATE_KEY}`]
         }
     },
     etherscan: {
@@ -27,11 +29,7 @@ const config: HardhatUserConfig = {
           rinkeby: ETHERSCAN_API_KEY,
           kovan: ETHERSCAN_API_KEY
         }
-    }/*,
-    gasReporter: {
-        enabled: process.env.REPORT_GAS !== undefined,
-        currency: "USD",
-    }*/
+    }
 };
 
 export default config;

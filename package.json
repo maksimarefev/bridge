@@ -29,5 +29,9 @@
     "ts-node": "^10.7.0",
     "typechain": "^8.0.0",
     "typescript": "^4.6.3"
+  },
+  "scripts": {
+    "deployRinkeby": "npx hardhat run --network rinkeby scripts/deploy.ts",
+    "deployBSC": "npx hardhat run --network bsc scripts/deploy.ts"
   }
 }

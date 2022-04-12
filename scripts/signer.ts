@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { ethers, Wallet, EventFilter } from "ethers";
+import { ethers, Wallet } from "ethers";
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 
