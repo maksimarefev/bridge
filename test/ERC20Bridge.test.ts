@@ -1,6 +1,6 @@
 import { expect, use } from "chai";
 import { ethers } from "hardhat";
-import { Signer, Contract, BigNumber } from "ethers";
+import { Signer, Contract } from "ethers";
 import { FakeContract, smock } from "@defi-wonderland/smock";
 import { ERC20Bridge, ERC20Bridge__factory } from "../typechain-types";
 
@@ -91,9 +91,7 @@ describe("ERC20Bridge", function () {
    describe("redeem", async function() {
         it("Should not allow to redeem twice", async function() {
             const aliceAddress: string = await alice.getAddress();
-            const aliceBalance: number = 1;
             const amount: number = 1;
-            const allowance: number = 1;
             const nonce: number = 1;
             const signature: string = await sign(aliceAddress, aliceAddress, amount, nonce, alice);
             await erc20Mock.mint.whenCalledWith(aliceAddress, amount).returns();
@@ -106,9 +104,7 @@ describe("ERC20Bridge", function () {
 
         it("Should not allow to redeem on wrong signer address", async function() {
             const aliceAddress: string = await alice.getAddress();
-            const aliceBalance: number = 1;
             const amount: number = 1;
-            const allowance: number = 1;
             const nonce: number = 1;
             const signature: string = await sign(aliceAddress, aliceAddress, amount, nonce, bob);
             await erc20Mock.mint.whenCalledWith(aliceAddress, amount).returns();
@@ -120,9 +116,7 @@ describe("ERC20Bridge", function () {
 
         it("Should mint tokens", async function() {
             const aliceAddress: string = await alice.getAddress();
-            const aliceBalance: number = 1;
             const amount: number = 1;
-            const allowance: number = 1;
             const nonce: number = 1;
             const signature: string = await sign(aliceAddress, aliceAddress, amount, nonce, alice);
             await erc20Mock.mint.whenCalledWith(aliceAddress, amount).returns();
