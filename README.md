@@ -18,7 +18,7 @@ In the root folder create *.env* file and fill it the following properties:<br/>
 2. Save the contract addresses for future interactions
 
 ## How to run a backend signer service
-Backend signer service is responsible for listening a target contract `SwapInitialized` events, signing its data and printing the result to the output
+Backend signer service is responsible for listening target contracts `SwapInitialized` events, signing its data and printing the result to the output
 1. From the root folder run ``` npm run startBackendService [rinkeby contract address] [bsc contract address] ```
 2. Look at the output in order to get parameters with corresponding signatures
 
