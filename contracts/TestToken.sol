@@ -4,9 +4,9 @@ import "./ERC20MintableBurnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract StepanToken is ERC20, ERC20MintableBurnable, Ownable {
+contract TestToken is ERC20, ERC20MintableBurnable, Ownable {
 
-    constructor() public ERC20("StepanToken", "ST") {
+    constructor() public ERC20("TestToken", "TST") {
         _mint(msg.sender, 10 * (10 ** decimals()));
     }
 

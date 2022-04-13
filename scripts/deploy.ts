@@ -1,7 +1,7 @@
 import { ethers } from "hardhat";
 import { execSync } from "child_process";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { ERC20Bridge, ERC20Bridge__factory, StepanToken, StepanToken__factory } from '../typechain-types';
+import { ERC20Bridge, ERC20Bridge__factory, TestToken, TestToken__factory } from '../typechain-types';
 
 function verify(contractAddress: string, network: string, ...constructorParameters: any[]) {
     if (!contractAddress) {
@@ -46,8 +46,8 @@ async function main() {
     console.log("Deploying contracts with the account:", accounts[0].address);
 
     console.log("Deploying ERC20 contract");
-    const StepanToken: StepanToken__factory = (await ethers.getContractFactory("StepanToken")) as StepanToken__factory;
-    const erc20: StepanToken = await StepanToken.deploy();
+    const TestToken: TestToken__factory = (await ethers.getContractFactory("TestToken")) as TestToken__factory;
+    const erc20: TestToken = await TestToken.deploy();
     await erc20.deployed();
     console.log("ERC20 contract had been deployed to:", erc20.address);
 

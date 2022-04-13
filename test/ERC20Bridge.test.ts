@@ -4,7 +4,7 @@ import { Signer, Contract } from "ethers";
 import { FakeContract, smock } from "@defi-wonderland/smock";
 import { ERC20Bridge, ERC20Bridge__factory } from "../typechain-types";
 
-import StepanToken from "../artifacts/contracts/StepanToken.sol/StepanToken.json";
+import TestToken from "../artifacts/contracts/TestToken.sol/TestToken.json";
 
 use(smock.matchers);
 
@@ -29,7 +29,7 @@ describe("ERC20Bridge", function () {
         const networkId: number = 1;
         [alice, bob] = await ethers.getSigners();
 
-        erc20Mock = await smock.fake(StepanToken.abi);
+        erc20Mock = await smock.fake(TestToken.abi);
 
         const ERC20BridgeFactory: ERC20Bridge__factory =
             (await ethers.getContractFactory("ERC20Bridge")) as ERC20Bridge__factory;

@@ -44,7 +44,9 @@ function subscribe(contractAddress: string, provider: Provider, signer: Wallet) 
 
 async function main() {
     const bscProvider: Provider = new ethers.providers.JsonRpcProvider('https://data-seed-prebsc-1-s1.binance.org:8545');
-    const rinkebyProvider: Provider = new ethers.providers.AlchemyProvider("rinkeby");
+
+    const alchemyApiKey: string = process.env.ALCHEMY_API_KEY; //If no apiKey is provided, a shared API key will be used.
+    const rinkebyProvider: Provider = new ethers.providers.AlchemyProvider("rinkeby", alchemyApiKey);
     const [rinkebyContractAddress, bscContractAddress] = getContractAddresses();
     const privateKey: string = process.env.SIGNER_KEY;
 
