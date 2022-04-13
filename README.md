@@ -8,27 +8,28 @@ In the root folder create *.env* file and fill it the following properties:<br/>
     ALCHEMY_API_KEY=[ALCHEMY API KEY]
     PRIVATE_KEY=[YOUR ACCOUNT's PRIVATE KEY]
     ETHERSCAN_API_KEY=[YOUR ETHERSCAN APY KEY]
+    BSC_API_KEY=[YOUR BSC API KEY]
     SIGNER_KEY=[SIGNER ACCOUNT's PRIVATE KEY]
 }
 ```
 
 ## How to deploy
 1. From the root folder run either ``` npm run deployRinkeby ``` or ``` npm run deployBSC ``` depending on the network chosen
-2. Save the contract address for future interactions
+2. Save the contract addresses for future interactions
 
 ## How to run a backend signer service
-####Backend signer service is responsible for listening a target contract `SwapInitialized` events, signing its data and printing the result to the output
+Backend signer service is responsible for listening a target contract `SwapInitialized` events, signing its data and printing the result to the output
 1. From the root folder run ``` npm run startBackendService [rinkeby contract address] [bsc contract address] ```
 2. Look at the output in order to get parameters with corresponding signatures
 
 ## How to run a task
-From the root folder run<br/>``` npx hardhat [task name] --network rinkeby --contract-address [contract address] --argument [argument value] ```<br/>Example:<br/>``` npx hardhat swap --network rinkeby --contract-address 0x36913BEc58a87BfB5eC1Fbb2fdEc6dd78a00B6eC --to 0x12D8F31923Aa0ACC543b96733Bc0ed348Ef44970 --amount 100 --network-id 97 ```
+From the root folder run<br/>``` npx hardhat [task name] --network [rinkeby or bsc] --contract-address [contract address] --argument [argument value] ```<br/>Example:<br/>``` npx hardhat swap --network rinkeby --contract-address 0x36913BEc58a87BfB5eC1Fbb2fdEc6dd78a00B6eC --to 0x12D8F31923Aa0ACC543b96733Bc0ed348Ef44970 --amount 100 --network-id 97 ```
 
 ## The list of available tasks
-| Task name | Description                                                                          | Options                                                                                                                                                                                                                                                                                                  |
-|-----------|--------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| swap      | Burns the `amount` of tokens and emits SwapInitialized event                         | --contract-address => An address of a contract</br>--to => The recepient address</br>--amount => The amount of tokens to be swapped                                                                                                                                                                      |
-| redeem    | Verifies the signature and mints the `amount` of tokens to the `msg.sender` address" | --contract-address => An address of a contract</br>--from => The address of account which triggered the swap</br>--amount => The amount of tokens to be redeemed</br>--nonce => The nonce value issued by the signer backend service</br>--signature => The signature made by the signer backend service |
+| Task name | Description                                                                          | Options                                                                                                                                                                                                                                                                                                                                           |
+|-----------|--------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| swap      | Burns the `amount` of tokens and emits SwapInitialized event                         | --contract-address => An address of a contract</br>--to => The recepient address</br>--amount => The amount of tokens to be swapped                                                                                                                                                                                                               |
+| redeem    | Verifies the signature and mints the `amount` of tokens to the `msg.sender` address" | --contract-address => An address of a contract</br>--from => The address of account which triggered the swap</br>--amount => The amount of tokens to be redeemed</br>--nonce => The nonce value issued by the signer backend service</br>--network-id => The target networkId</br>--signature => The signature made by the signer backend service |
 
 ## How to run tests and evaluate the coverage
 From the root folder run ``` npx hardhat coverage ```
