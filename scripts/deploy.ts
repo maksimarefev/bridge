@@ -34,6 +34,7 @@ async function main() {
             throw new Error("Invalid network chosen");
         }
     })();
+
     const accounts: SignerWithAddress[] = await ethers.getSigners();
 
     if (accounts.length == 0) {
@@ -63,7 +64,7 @@ async function main() {
     console.log("NFT contract is verified");
 
     console.log("Verifying bridge contract..");
-    verify(bridge.address, networkName, signerAddress, erc20.address);
+    verify(bridge.address, networkName, signerAddress, erc20.address, networkId);
     console.log("Bridge contract is verified");
 }
 
