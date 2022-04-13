@@ -36,14 +36,14 @@ contract ERC20Bridge {
     }
 
     /**
-     * @notice Burns the `amount` of tokens and emits SwapInitialized event
+     * @notice Burns the `amount` of tokens from the `msg.sender' address and emits SwapInitialized event
      */
     function swap(address to, uint256 amount, uint256 targetNetworkId) public {
         require(networkId != targetNetworkId, "Invalid target network id");
         require(token.balanceOf(msg.sender) >= amount, "Sender has not enough balance");
         require(token.allowance(msg.sender, address(this)) >= amount, "Bridge has not enough allowance");
 
-        token.burnFrom(to, amount);
+        token.burnFrom(msg.sender, amount);
 
         emit SwapInitialized(msg.sender, to, amount, targetNetworkId);
     }

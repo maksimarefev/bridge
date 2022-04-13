@@ -3,7 +3,7 @@ import "@nomiclabs/hardhat-ethers";
 import { task } from 'hardhat/config';
 import { Contract, ContractFactory, Event } from "ethers";
 
-task("swap", "Burns the `amount` of tokens and emits SwapInitialized event")
+task("swap", "Burns the `amount` of tokens from the `msg.sender' address and emits SwapInitialized event")
     .addParam("contractAddress", "The address of the bridge contract")
     .addParam("to", "The recepient address")
     .addParam("amount", "The amount of tokens to be swapped")
