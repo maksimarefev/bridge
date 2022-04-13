@@ -19,5 +19,8 @@ task("redeem", "Verifies the signature and mints the `amount` of tokens to the `
         const redeemTxReceipt: any = await redeemTx.wait();
 
         console.log("Successfully redeemed %d tokens to %s", taskArgs.amount, await accounts[0].getAddress());
-        console.log("Gas used: %d", redeemTxReceipt.gasUsed.toNumber() * redeemTxReceipt.effectiveGasPrice.toNumber());
+
+        if (redeemTxReceipt.gasUsed && redeemTxReceipt.effectiveGasPrice) {
+            console.log("Gas used: %d", redeemTxReceipt.gasUsed.toNumber() * redeemTxReceipt.effectiveGasPrice.toNumber());
+        }
     });

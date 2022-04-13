@@ -22,5 +22,8 @@ task("swap", "Burns the `amount` of tokens from the `msg.sender' address and emi
             swapInitializedEvent.args.from,
             swapInitializedEvent.args.to
         );
-        console.log("Gas used: %d", swapTxReceipt.gasUsed.toNumber() * swapTxReceipt.effectiveGasPrice.toNumber());
+
+        if(swapTxReceipt.gasUsed && swapTxReceipt.effectiveGasPrice) {
+            console.log("Gas used: %d", swapTxReceipt.gasUsed.toNumber() * swapTxReceipt.effectiveGasPrice.toNumber());
+        }
     });
